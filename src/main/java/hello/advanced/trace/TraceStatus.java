@@ -7,9 +7,11 @@ public class TraceStatus {
     private String message;
 
     public TraceStatus(TraceId traceId, Long startTimeMs, String message) {
+
         this.traceId = traceId;
         this.startTimeMs = startTimeMs;
         this.message = message;
+
     }
 
     public TraceId getTraceId() {
