@@ -2,6 +2,7 @@ package hello.advanced.app.v4;
 
 import hello.advanced.trace.TraceStatus;
 import hello.advanced.trace.logtrace.LogTrace;
+import hello.advanced.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +15,16 @@ public class OrderServiceV4 {
 
     public void orderItem(String itemId){
 
-        TraceStatus status = null;
-        try {
+        AbstractTemplate<Void> template = new AbstractTemplate<Void>(trace) {
 
-            status = trace.begin("OrderService.orderItem()");
-            orderRepository.save(itemId);
-            trace.end(status);
+            @Override
+            protected Void call() {
+                orderRepository.save(itemId);
+                return null;
+            }
+        };
 
-        }catch (Exception e){
-            trace.exception(status, e);
-            throw e;
-        }
+        template.excute("OrderService.orderItem()");
 
     }
 
